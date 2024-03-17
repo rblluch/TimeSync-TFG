@@ -16,6 +16,7 @@ use App\Http\Controllers\api\TaskController;
 |
 */
 
+/* Only logged users */
 Route::middleware('auth:sanctum')->group(function(){
 
     Route::post('/auth/logout', [UserController::class, 'logout']);
@@ -33,6 +34,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('/user/store', []);
     Route::post('/user/update/{id}', []);
     Route::delete('/user/delete/{id}', []);
+
+    /* API Services */
     
 });
 
