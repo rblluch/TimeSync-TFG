@@ -14,8 +14,11 @@
         </div>
 
         <div class="form-card w-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <form class="space-y-6" action="#">
+            <form class="space-y-6" id="registerForm" action="">
                 <h5 class="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h5>
+                <div>
+                    <span id="error" style="color:red;" hidden > Credenciales incorrectas </span>
+                </div>
                 <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                         email</label>
@@ -35,7 +38,7 @@
                         <div class="flex items-center h-5">
                             <input id="remember" type="checkbox" value=""
                                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
-                                required />
+                                />
                         </div>
                         <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember
                             me</label>
@@ -54,5 +57,12 @@
         </div>
 
     </div>
+
+
+@endsection
+
+@section('scripts')
+
+    <script src="../resources/js/access.js" ></script>
 
 @endsection

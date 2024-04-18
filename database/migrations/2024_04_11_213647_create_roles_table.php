@@ -22,6 +22,10 @@ return new class extends Migration
 
         DB::table('roles')->insert([
             [
+                'name' => 'timesync_admin', 
+                'description' => 'TimeSync Administrator'
+            ],
+            [
                 'name' => 'superadmin', 
                 'description' => 'Super Administrator'
             ],
@@ -32,6 +36,10 @@ return new class extends Migration
             [
                 'name' => 'user', 
                 'description' => 'Regular User'
+            ],
+            [
+                'name' => 'unregistered_user', 
+                'description' => 'Unregistered User'
             ],
         ]);
 

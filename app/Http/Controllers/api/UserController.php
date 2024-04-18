@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -48,6 +49,48 @@ class UserController extends Controller
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to create user',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+    }
+
+    public function registerCompany(Request $request){
+
+        try{
+
+            $validate = Validator::make($request->all(), 
+            [
+                'name' => 'required|unique:users',
+                'email' => 'required|email|unique:users',
+            ]);
+    
+            if($validate->fails()){
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'Error to validate data',
+                    'errors' => $validate->errors()
+                ], 400);
+            }
+    
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => 5,
+            ]);
+
+            //TODO Send Mail
+            
+    
+            return response()->json([
+                'status' => 201,
+                'message' => 'Company created successfully',
+                'token' => $user->createToken('Register Token')->plainTextToken
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Failed to create company',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -119,6 +162,10 @@ class UserController extends Controller
             ], 500);
         }
 
+    }
+
+    public function sendMail(string $email, string $subject, string $message){
+        //TODO - Implement send mail
     }
     
 }
