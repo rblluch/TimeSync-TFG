@@ -1,9 +1,10 @@
 @extends('layouts.template')
 
 @section('title', 'TimeSync')
+@section('metadescription', 'TimeSync es una plataforma de sincronización de tiempo para empresas y organizaciones.')
 
 @section('content')
-    <div id="wrapper" class="flex justify-around items-center {{-- border-solid border-4 border-black --}} p-5">
+    <div id="wrapper" class="wrapper-w-bg flex justify-around items-center {{-- border-solid border-4 border-black --}} p-5">
 
         <div>
             <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-200 md:text-5xl lg:text-6xl dark:text-white">
@@ -13,7 +14,7 @@
             </h1>
         </div>
 
-        <div class="form-card w-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+        <div class="form-card form-card-w-bg w-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
             <form class="space-y-6" id="registerForm" action="">
                 <h5 class="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h5>
                 <div>

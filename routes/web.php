@@ -18,7 +18,7 @@ use App\Http\Controllers\Controller;
 // Index Route
 Route::get('/', [Controller::class, 'index'])->name('index');
 
-Route::get('/signup', function(){})->name('signup');
+Route::get('/register', function(){ return view('register'); })->name('register');
 
 Route::post('/login', [AccessController::class, 'login'])->name('login');
 

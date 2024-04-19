@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
+    <meta name="description" content="@yield('metadescription')">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('storage/css/app.css') }}">
@@ -35,6 +36,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="../resources/js/config.js"></script>
+    {!! NoCaptcha::renderJs() !!}
     @yield('scripts')
     {{-- <script src="{{ asset('jquery-3.7.1.min.js') }}"></script> --}}
 
