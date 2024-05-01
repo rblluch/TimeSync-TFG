@@ -15,24 +15,29 @@
         </div>
 
         <div class="form-card form-card-w-bg w-full max-w-sm p-4 border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <form class="space-y-6" id="registerForm" action="">
+            <form class="space-y-6" id="NOloginForm" action="{{ route('login') }}" method="POST">
+            {{-- <form class="space-y-6" id="loginForm" action="" method="POST"> --}}
+                @csrf
                 <h5 class="text-xl font-medium text-gray-900 dark:text-white">Sign in to our platform</h5>
                 <div>
-                    <span id="error" style="color:red;" hidden > Credenciales incorrectas </span>
+                    @error('error')
+                        <span class="text-red-500">{{ $message }}</span>
+                    @enderror
+                        {{-- <span id="error" style="color:red;" hidden > Credenciales incorrectas </span> --}}
                 </div>
                 <div>
                     <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                         email</label>
                     <input type="email" name="email" id="email"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        placeholder="name@company.com" required />
+                        placeholder="name@company.com" required value="{{ old('email') }}"  @error('error') style="border:2px solid red;" @enderror />
                 </div>
                 <div>
                     <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
                         password</label>
                     <input type="password" name="password" id="password" placeholder="••••••••"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                        required />
+                        required @error('error') style="border:2px solid red;" @enderror />
                 </div>
                 <div class="flex items-start">
                     <div class="flex items-start">
@@ -64,6 +69,6 @@
 
 @section('scripts')
 
-    <script src="../resources/js/access.js" ></script>
+    <script src="../resources/js/login.js" ></script>
 
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\api\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 
@@ -16,13 +17,25 @@ use App\Http\Controllers\Controller;
 */
 
 // Index Route
-Route::get('/', [Controller::class, 'index'])->name('index');
+Route::get('/', [Controller::class, 'index'])->name('index')->middleware('guest');
 
 Route::get('/register', function(){ return view('register'); })->name('register');
 
 Route::post('/login', [AccessController::class, 'login'])->name('login');
 
-/* Route::get('/logout', [AccessController::class, 'logout'])->name('logout'); */
-Route::get('/home', function(){
-    return view('welcome');
-})->name('home');
+Route::middleware('auth')->group(function(){
+
+    Route::get('/logout', [AccessController::class, 'logout'])->name('logout');
+    Route::get('/home', [Controller::class, 'home'])->name('home');
+    Route::get('/workday', [UserController::class, 'workday'])->name('workday');
+
+});
+
+
+// Rutas de Prueba
+
+Route::get('/task', function(){
+    return view('layouts.task');
+})->name('task');
+
+

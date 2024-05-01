@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -43,7 +44,7 @@ class UserController extends Controller
             return response()->json([
                 'status' => 201,
                 'message' => 'User created successfully',
-                'token' => $user->createToken('API Token')->plainTextToken
+                'token' => $user->createToken('Sign Up Token')->plainTextToken
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([
@@ -61,8 +62,10 @@ class UserController extends Controller
 
             $validate = Validator::make($request->all(), 
             [
-                'name' => 'required|unique:users',
+                'name' => 'required',
                 'email' => 'required|email|unique:users',
+                'email_confirmation' => 'required|same:email',
+                /* 'g-recaptcha-response' => 'required|recaptcha', */
             ]);
     
             if($validate->fails()){
@@ -76,16 +79,16 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
-                'role' => 5,
+                'role_id' => 5,
             ]);
 
             //TODO Send Mail
-            
+            $token = $user->createToken('Register Token')->plainTextToken;
     
             return response()->json([
                 'status' => 201,
                 'message' => 'Company created successfully',
-                'token' => $user->createToken('Register Token')->plainTextToken
+                'token' => $token
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([
@@ -114,22 +117,36 @@ class UserController extends Controller
                     'errors' => $validate->errors()
                 ], 401);
             }
+
+            $email = $request->email;
+            $password = $request->password;
     
-            if(!Auth()->attempt($request->only(['email', 'password']))){
+            if (auth()->attempt(['email' => $email, 'password' => $password])) {
+                
+                $user = User::where('email', $request->email)->first();
+                /* $user = Auth::user(); */
+
+                //TODO - if remember me is checked, create a session with the token
+                /* Auth::loginUsingId($user->id);
+                session_start(); */
+
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'User logged successfully',
+                    'token' => $user->createToken('Login Token')->accessToken,
+                    'user' => $user
+                ], 200);
+
+            } else{
+
                 return response()->json([
                     'status' => 401,
                     'message' => 'Invalid credentials',
                 ], 401);
+
             }
 
-            $user = User::where('email', $request->email)->first();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'User logged successfully',
-                'token' => $user->createToken('API Token')->plainTextToken,
-                'user' => $user
-            ], 200);
+            
             
         } catch (\Throwable $e) {
             return response()->json([
@@ -161,6 +178,20 @@ class UserController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
+
+    }
+
+    public function workday(){
+        $user = auth()->user();
+        //dd($user);
+
+        if($user){
+            $user = User::find($user->id);
+            $user->is_working = !$user->is_working;
+            $user->save();
+        }
+
+        return redirect()->route('home');
 
     }
 

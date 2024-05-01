@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class Task extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -18,15 +18,17 @@ class User extends Authenticatable
      * @var array<int, string>
      */
 
-    protected $table = 'users';
+    protected $table = 'tasks';
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'role_id',
-        'is_working',
+        'description',
+        'service_id',
+        'company_id',
+        'worker_id',
+        'status',
+        'scheduled_date',
     ];
 
     /**
@@ -34,10 +36,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = [];
 
     /**
      * The attributes that should be cast.
@@ -45,7 +44,11 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        'scheduled_date' => 'date',
     ];
+
+    public function service()
+    {
+        return $this->belongsTo('App\Models\Service');
+    }
 }

@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
     <meta name="description" content="@yield('metadescription')">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="{{ asset('storage/css/app.css') }}">
@@ -18,9 +20,9 @@
         <header class="sticky z-50 top-0 p-4">
             {{-- Check if user is authenticated --}}
             @if(auth()->user())
-                @include('layouts.headerAuth')
+                @include('layouts.header.headerAuth')
             @else
-                @include('layouts.headerGuest')
+                @include('layouts.header.headerGuest')
             @endif
         </header>
 
