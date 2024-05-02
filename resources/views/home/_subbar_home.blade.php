@@ -1,1 +1,1 @@
-@include('layouts.button', ['url' => 'logout', 'text' => '+ Nueva tarea'])
+@include('layouts.button', ['url' => 'task.new', 'text' => '+ Nueva tarea'])

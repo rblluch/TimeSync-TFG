@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccessController;
+use App\Http\Controllers\api\TaskController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,15 @@ Route::middleware('auth')->group(function(){
     Route::get('/logout', [AccessController::class, 'logout'])->name('logout');
     Route::get('/home', [Controller::class, 'home'])->name('home');
     Route::get('/workday', [UserController::class, 'workday'])->name('workday');
+
+    Route::get('/task/{id}', [TaskController::class, 'show'])->name('task.show');
+
+    Route::get('/new/task', function(){
+        return view('tasks.task_new');
+    })->name('task.new');
+
+    Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
+
 
 });
 

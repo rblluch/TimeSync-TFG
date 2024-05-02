@@ -17,7 +17,7 @@
 
         {{-- {{dd(asset('css/app.css'))}} --}}
         
-        <header class="sticky z-50 top-0 p-4">
+        <header class="fixed w-full z-50 top-0 p-4">
             {{-- Check if user is authenticated --}}
             @if(auth()->user())
                 @include('layouts.header.headerAuth')

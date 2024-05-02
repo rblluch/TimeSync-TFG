@@ -35,4 +35,64 @@ class TaskController extends Controller
         return view('home.home', ['tasks' => $tasks]);
 
     }
+
+    public function show($id){
+        $task = Task::find($id);
+
+        /* if ($task) {
+            return response()->json([
+                'status' => 200,
+                'task' => $task
+            ], 200);
+        } else {
+            return response()->json([
+                'status' => 404,
+                'task' => 'Task not found'
+            ], 404);
+        } */
+
+        if ($task) {
+            return view('task.taskShow', ['task' => $task]);
+        } else {
+            return back()->withErrors([
+                'error' => 'Task not found'
+            ]);
+        } 
+
+    }
+
+    public function store(Request $request){
+        $validate = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'status' => 'required',
+            'worker_id' => 'required',
+            'service_id' => 'required',
+            'scheduled_date' => 'required|date',
+        ]);
+
+        $user = auth()->user();
+
+
+        $task = [
+            'name' => $request->name,
+            'description' => $request->description,
+            'status' => $request->status,
+            'company_id' => $user->company->id,
+            'worker_id' => $request->worker_id,
+            'service_id' => $request->service_id,
+            'scheduled_date' => $request->scheduled_date,
+        ];
+
+        $task = Task::create($task);
+
+        /* return response()->json([
+            'status' => 201,
+            'message' => 'Task created successfully',
+            'task' => $task
+        ], 201); */
+
+        return redirect()->route('home');
+
+    }
 }
