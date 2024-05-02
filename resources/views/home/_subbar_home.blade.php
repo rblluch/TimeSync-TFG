@@ -1,1 +1,1 @@
-<a href="">Añadir nueva tarea</a>
+@include('layouts.button', ['url' => 'logout', 'text' => '+ Nueva tarea'])

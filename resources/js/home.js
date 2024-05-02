@@ -1,11 +1,11 @@
 $(document).ready(function () {
     
-    getTasks().then(data => {
+    /* getTasks().then(data => {
         console.log(data);
-        
+
     }).catch(error => {
         console.error(error);
-    });
+    }); */
 
 });
 

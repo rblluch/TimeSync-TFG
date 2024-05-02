@@ -4,6 +4,10 @@
     {{ asset('storage/img/app/logo-timesync-blue.png') }}
 @endsection
 
+@section('logo-class')
+    w-48
+@endsection
+
 @section('nav')
     <a href="{{route('index')}}" class="">Inicio</a>
     <a href="" class="">Sobre nosotros</a>

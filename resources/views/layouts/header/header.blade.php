@@ -1,6 +1,6 @@
 <div class="flex justify-around items-center">
     <div>
-        <img src="@yield('logo')" alt="TimeSync" class="w-48">
+        <img src="@yield('logo')" alt="TimeSync" class="@yield('logo-class')">
     </div>
     <div>
         <nav class="space-x-24">

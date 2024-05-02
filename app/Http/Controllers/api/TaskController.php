@@ -32,7 +32,7 @@ class TaskController extends Controller
                 'tasks' => 'No hay tasks'
             ], 404);
         } */
-        return view('home', ['tasks' => $tasks]);
+        return view('home.home', ['tasks' => $tasks]);
 
     }
 }

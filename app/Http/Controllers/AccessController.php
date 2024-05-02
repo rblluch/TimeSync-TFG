@@ -48,7 +48,10 @@ class AccessController extends Controller
         $email = $request->email;
         $password = $request->password;
 
-        if (auth()->attempt(['email' => $email, 'password' => $password])) {
+        $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
+
+        if (auth()->attempt($credentials, $remember)) {
             $user = User::where('email', $email)->first();
             //session(['band' => $user]);
             return redirect()->route('home');
