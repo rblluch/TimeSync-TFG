@@ -54,4 +54,26 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Company');
     }
 
+    public function roles()
+    {
+        return $this->belongsTo('App\Models\Role');
+    }
+
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function hasAnyRole($roles)
+    {
+        foreach ($roles as $role) {
+            if ($this->hasRole($role)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
 }

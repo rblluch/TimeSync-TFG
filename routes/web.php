@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function(){
 // Rutas de Prueba
 
 Route::get('/task', function(){
-    return view('layouts.task');
+    return view('tasks.task');
 })->name('task');
 
 

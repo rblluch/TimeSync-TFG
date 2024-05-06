@@ -13,13 +13,16 @@
     <link rel="stylesheet" href="{{ asset('storage/css/app.css') }}">
 </head>
 <body class="h-svh bg-gray-200">
+    @php
+        $user = auth()->user();
+    @endphp
     <div id="wrapper" class="flex flex-col min-h-screen">
 
         {{-- {{dd(asset('css/app.css'))}} --}}
         
         <header class="fixed w-full z-50 top-0 p-4">
             {{-- Check if user is authenticated --}}
-            @if(auth()->user())
+            @if($user)
                 @include('layouts.header.headerAuth')
             @else
                 @include('layouts.header.headerGuest')
