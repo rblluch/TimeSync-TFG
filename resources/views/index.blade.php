@@ -52,14 +52,13 @@
                         </div>
                         <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Recuérdame</label>
                     </div>
-                    <a href="#" class="ms-auto text-sm text-blue-700 hover:underline dark:text-blue-500">Lost
-                        Password?</a>
+                    <a href="#" class="ms-auto text-sm text-gray-200 hover:underline dark:text-gray-200">Contraseña perdida?</a>
                 </div>
                 <button type="submit"
-                    class="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Login
+                class="w-full text-neutral-700 hover:text-white bg-gray-200 hover:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-gray-200 dark:hover:bg-neutral-700 dark:focus:ring-blue-800">Login
                     to your account</button>
-                <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-                    Not registered? <a href="#" class="text-blue-700 hover:underline dark:text-blue-500">Create
+                <div class="text-sm font-medium text-neutral-700 dark:text-gray-300">
+                    Not registered? <a href="{{route('register')}}" class="text-gray-200 hover:underline dark:text-gray-200">Create
                         account</a>
                 </div>
             </form>

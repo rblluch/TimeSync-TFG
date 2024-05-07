@@ -1,6 +1,9 @@
 
 @php
 
+    use Illuminate\Support\Str;
+    use Carbon\Carbon;
+
     $bgColor = 'white';
 
     if($task['status'] === 'in_progress'){
@@ -14,24 +17,24 @@
 <div class="w-80 h-96  p-6 {{$finalColor}} flex flex-col justify-between border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
     <div>
         <a href="#">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $task['name'] }}</h5>
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $task->name }}</h5>
         </a>
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ $task['description'] }}</p>
-
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ Str::limit($task->description, 75) }}</p>
         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
             <strong>Servicio:</strong> {{ $task->service->name }}
         </p>
 
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas estimadas:</strong> {{ $task['total_hours'] ?? '0.0H' }}</p>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas estimadas:</strong> {{ $task->service->total_hours ?? '0.0H' }}</p>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas de esta tarea:</strong> {{ $task['hours'] ?? '0.0H' }}</p>
         
-        @if($task['hours'] > $task['total_hours'])
-            <p class="mb-3 font-normal text-red-700 dark:text-red-400"><strong>Horas acumuladas:</strong> {{ $task['hours'] ?? '0.0H' }}</p>
-            @else
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas acumuladas:</strong> {{ $task['hours'] ?? '0.0H' }}</p>
+        @if($task->service->total_hours < $task->service->hours_used)
+            <p class="mb-3 font-normal text-red-700 dark:text-red-400"><strong>Horas acumuladas:</strong> {{ $task->service->hours_used ?? '0.0H' }}</p>
+        @else
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas acumuladas:</strong> {{ $task->service->hours_used ?? '0.0H' }}</p>
         @endif
 
-        @if($task['scheduled_date'])
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Fecha límite:</strong> {{ $task['scheduled_date'] }}</p>
+        @if($task->scheduled_date)
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Fecha límite:</strong> {{ Carbon::parse($task['scheduled_date'])->format('d/m/Y') }}</p>
         @endif
     </div>
 

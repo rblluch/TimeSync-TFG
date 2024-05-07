@@ -27,7 +27,7 @@ class Service extends Authenticatable
         'company_id',
         'status',
         'total_hours',
-        'hours',
+        'hours_used',
     ];
 
     /**

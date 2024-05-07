@@ -62,25 +62,35 @@ class TaskController extends Controller
     }
 
     public function store(Request $request){
+        //dd($request->all());
         $validate = $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'status' => 'required',
-            'worker_id' => 'required',
-            'service_id' => 'required',
-            'scheduled_date' => 'required|date',
+            'worker' => 'required',
+            'service' => 'required',
+            'scheduled_date' => 'required',
         ]);
 
+        /* dd($validate); */
+        //dd($request->all());
+
+        if(!$validate){
+            return back()->withErrors([
+                'error' => 'Error al validar los datos',
+            ]);
+        }
+
         $user = auth()->user();
+
 
 
         $task = [
             'name' => $request->name,
             'description' => $request->description,
-            'status' => $request->status,
+            'status' => 'pending',
             'company_id' => $user->company->id,
-            'worker_id' => $request->worker_id,
-            'service_id' => $request->service_id,
+            'worker_id' => $request->worker,
+            'service_id' => $request->service,
             'scheduled_date' => $request->scheduled_date,
         ];
 
@@ -94,5 +104,15 @@ class TaskController extends Controller
 
         return redirect()->route('home');
 
+    }
+
+    public function showNewTaskForm(){
+
+        $user = auth()->user();
+        $services = $user->company->services;
+
+        $workers = $user->company->workers;
+
+        return view('tasks.task_new', ['services' => $services, 'workers' => $workers]);
     }
 }

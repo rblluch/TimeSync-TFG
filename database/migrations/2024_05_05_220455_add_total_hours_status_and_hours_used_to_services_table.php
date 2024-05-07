@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('services', function (Blueprint $table) {
             $table->enum('status', ['in_progress', 'completed', 'canceled'])->default('in_progress');
             $table->integer('total_hours')->nullable();
-            $table->integer('hours')->nullable();
+            $table->integer('hours_used')->nullable();
         });
     }
 
@@ -24,8 +24,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('services', function (Blueprint $table) {
+            $table->dropColumn('status');
             $table->dropColumn('total_hours');
-            $table->dropColumn('hours');
+            $table->dropColumn('hours_used');
         });
     }
 };

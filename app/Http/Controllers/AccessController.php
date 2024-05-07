@@ -6,36 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 use App\Mail\RegistrationConfirmation;
+use App\Models\Role;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 
 class AccessController extends Controller
 {
-    /* public function login(Request $request){
-        try{
-
-            $response = Http::get(env('API_ENDPOINT').'hola');
-
-            if ($response->ok()) {
-                // Obtener los datos de la respuesta en formato JSON
-                $data = $response->json();
-    
-                // Pasar los datos a la vista
-                return view('welcome');
-            } else {
-                // Manejar errores de la solicitud
-                return view('welcome');
-
-            }
-
-        } catch (\Throwable $e) {
-            return response()->json([
-                'status' => 500,
-                'message' => 'Failed to login',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    } */
     function login(Request $request)
     {
 
@@ -77,5 +53,39 @@ class AccessController extends Controller
         Mail::to($testEmail)->send(new RegistrationConfirmation($testToken));
 
         return 'Test email sent';
+    }
+
+    public function showNewUserForm()
+    {
+        $roles =  Role::where('name', '!=', 'timesync_admin')
+                        ->where('name', '!=', 'superadmin')
+                        ->where('name', '!=', 'unregistered_user')
+                        ->get();
+        return view('users.user_new', ['roles' => $roles]);
+    }
+
+    public function store(Request $request){
+
+        //dd($request->all());
+
+        $validate = request()->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required',
+            'password_confirmation' => 'required|same:password', // 'password' => 'required|confirmed
+            'role' => 'required',
+        ]);
+
+        //dd($validate);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+            'roles_id' => $request->role,
+            'company_id' => auth()->user()->company_id,
+        ]);
+
+        return redirect()->route('home');
     }
 }

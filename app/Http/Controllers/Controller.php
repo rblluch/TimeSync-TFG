@@ -19,7 +19,9 @@ class Controller extends BaseController
     public function home()
     {   
         $user = auth()->user();
-        $tasks = Task::with('service')->where('worker_id', $user->id)->get();
+        $tasks = Task::with('service')->where('worker_id', $user->id)
+                                        ->whereNotIn('status', ['cancelled', 'completed'])
+                                        ->get();
         return view('home.home', ['tasks' => $tasks]);
     }
 }

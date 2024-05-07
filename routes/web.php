@@ -5,6 +5,7 @@ use App\Http\Controllers\api\TaskController;
 use App\Http\Controllers\api\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ServiceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,17 +27,32 @@ Route::post('/login', [AccessController::class, 'login'])->name('login');
 
 Route::middleware('auth')->group(function(){
 
+    //App Routes
     Route::get('/logout', [AccessController::class, 'logout'])->name('logout');
     Route::get('/home', [Controller::class, 'home'])->name('home');
     Route::get('/workday', [UserController::class, 'workday'])->name('workday');
 
+    //Task Routes
     Route::get('/task/{id}', [TaskController::class, 'show'])->name('task.show');
-
-    Route::get('/new/task', function(){
-        return view('tasks.task_new');
-    })->name('task.new');
-
+    Route::get('/new/task', [TaskController::class, 'showNewTaskForm'])->name('task.new');
     Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
+    Route::post('/task/update/{id}', [TaskController::class, 'update'])->name('task.update');
+    Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('task.delete');
+
+    //Service Routes
+    Route::get('/new/service', [ServiceController::class, 'showNewServiceForm'])->name('service.new');
+    Route::post('/service/store', [ServiceController::class, 'store'])->name('service.store');
+    Route::get('/service/{id}', [ServiceController::class, 'show'])->name('service.show');
+    Route::post('/service/update/{id}', [ServiceController::class, 'update'])->name('service.update');
+    Route::delete('/service/delete/{id}', [ServiceController::class, 'destroy'])->name('service.delete');
+
+    //User Routes
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/new/user', [AccessController::class, 'showNewUserForm'])->name('user.new');
+    Route::post('/user/store', [AccessController::class, 'store'])->name('user.store');
+    Route::post('/user/update/{id}', [AccessController::class, 'update'])->name('user.update');
+    Route::delete('/user/delete/{id}', [AccessController::class, 'destroy'])->name('user.delete');
 
 
 });

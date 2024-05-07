@@ -39,4 +39,14 @@ class Company extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [];
+
+    public function services()
+    {
+        return $this->hasMany('App\Models\Service');
+    }
+
+    public function workers()
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }

@@ -29,8 +29,7 @@ class Task extends Authenticatable
         'worker_id',
         'status',
         'scheduled_date',
-        'total_hours',
-        'hours',
+        /* 'hours', */
     ];
 
     /**
