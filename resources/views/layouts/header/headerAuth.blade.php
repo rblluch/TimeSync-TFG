@@ -17,10 +17,11 @@
     {{-- <a href="" class=""><img src="" alt="Iniciar Jornada"></a> --}}
     {{-- <a href="{{route('logout')}}" class="">Cerrar sesion</a> --}}
     @include('layouts.button', ['url' => 'logout', 'text' => 'Cerrar sesion', 'hover' => 'red'])
-
-    @if ($user->is_working)
-        @include('layouts.button', ['url' => 'workday', 'text' => 'Finalizar Jornada', 'color' => 'red'])
+    @if($user->is_working)
+        @include('layouts.button', ['url' => 'workday', 'text' => 'Finalizar Jornada', 'color' => 'green', 'hover' => 'green', 'js' => true])
     @else
-        @include('layouts.button', ['url' => 'workday', 'text' => 'Iniciar Jornada'])
+        @include('layouts.button', ['url' => 'workday', 'text' => 'Iniciar Jornada', 'js' => true])
     @endif
+
+
 @endsection

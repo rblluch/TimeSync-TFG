@@ -34,6 +34,11 @@
 @endphp
 
 
-<button class="{{$bgColor}} hover:{{$bghover}} text-white font-bold py-2 px-4 rounded">
-    <a href="{{route($url)}}" class="btn">{{$text}}</a>
+<button id="{{$url.'Button'}}" class="{{$bgColor}} hover:{{$bghover}} text-white font-bold py-2 px-4 rounded">
+    @if(isset($js) && $js)
+        {{$text}}
+    @else
+        <a href="{{route($url)}}" class="btn">{{$text}}</a>
+    @endif
+    {{-- <a href="{{route($url)}}" class="btn">{{$text}}</a> --}}
 </button>

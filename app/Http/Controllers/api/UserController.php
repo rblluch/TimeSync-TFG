@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
@@ -12,6 +14,64 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function index(){
+        $company_id = auth()->user()->company_id;
+        $users = User::where('company_id', $company_id)->get();
+        $schedules = Schedule::where('company_id', $company_id)->get();
+        $roles = Role::whereNotIn('id', [5])->get();
+        $editing = request()->get('editing');
+        return view('users.users', ['users' => $users, 'schedules' => $schedules, 'roles' => $roles, 'editing' => $editing]);
+    }
+
+    public function update(Request $request, $id){
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->roles_id = $request->role;
+        $user->save();
+        return redirect()->route('users');
+    }
+
+    public function delete($id){
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route('users');
+    }
+
+    public function workday(){
+        $user = auth()->user();
+        //dd($user);
+
+        if($user){
+
+            if($user->is_working){
+                $schedule = Schedule::where('user_id', $user->id)
+                                    ->where('end_time', null)
+                                    ->first();
+                $schedule->end_time = now();
+                $schedule->save();
+            } else {
+                $schedule = Schedule::create([
+                    'user_id' => $user->id,
+                    'company_id' => $user->company_id,
+                    'start_time' => now(),
+                    'end_time' => null,
+                ]);
+            }
+
+            $user = User::find($user->id);
+            $user->is_working = !$user->is_working;
+            $user->save();
+
+        }
+
+        return redirect()->route('home');
+
+    }
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
     public function createUser(Request $request){
 
         try{
@@ -178,20 +238,6 @@ class UserController extends Controller
                 'error' => $e->getMessage()
             ], 500);
         }
-
-    }
-
-    public function workday(){
-        $user = auth()->user();
-        //dd($user);
-
-        if($user){
-            $user = User::find($user->id);
-            $user->is_working = !$user->is_working;
-            $user->save();
-        }
-
-        return redirect()->route('home');
 
     }
 

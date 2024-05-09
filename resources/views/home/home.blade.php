@@ -26,11 +26,6 @@
         @if(isset($tasks))
             @foreach ($tasks as $task)
                 @include('tasks.task')
-{{--                 @include('tasks.task')
-                @include('tasks.task')
-                @include('tasks.task')
-                @include('tasks.task')
-                @include('tasks.task') --}}
             @endforeach
         @endif
     </div>
@@ -46,6 +41,6 @@
 @endsection
 
 @section('scripts')
-<script src="../resources/js/home.js" ></script>
-
+{{-- <script src="../resources/js/header.js" ></script>
+--}}
 @endsection

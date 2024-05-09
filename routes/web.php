@@ -33,11 +33,13 @@ Route::middleware('auth')->group(function(){
     Route::get('/workday', [UserController::class, 'workday'])->name('workday');
 
     //Task Routes
+    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
     Route::get('/task/{id}', [TaskController::class, 'show'])->name('task.show');
     Route::get('/new/task', [TaskController::class, 'showNewTaskForm'])->name('task.new');
     Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
     Route::post('/task/update/{id}', [TaskController::class, 'update'])->name('task.update');
     Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('task.delete');
+    Route::get('/task/cancel/{id}', [TaskController::class, 'cancel'])->name('task.cancel');
 
     //Service Routes
     Route::get('/new/service', [ServiceController::class, 'showNewServiceForm'])->name('service.new');
@@ -51,8 +53,8 @@ Route::middleware('auth')->group(function(){
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
     Route::get('/new/user', [AccessController::class, 'showNewUserForm'])->name('user.new');
     Route::post('/user/store', [AccessController::class, 'store'])->name('user.store');
-    Route::post('/user/update/{id}', [AccessController::class, 'update'])->name('user.update');
-    Route::delete('/user/delete/{id}', [AccessController::class, 'destroy'])->name('user.delete');
+    Route::post('/user/update/{id}', [UserController::class, 'update'])->name('user.update');
+    Route::get('/user/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
 
 
 });
@@ -63,5 +65,8 @@ Route::middleware('auth')->group(function(){
 Route::get('/task', function(){
     return view('tasks.task');
 })->name('task');
+
+//Route::get('/tasks', [TaskController::class, 'index'])->name('tasks');
+
 
 

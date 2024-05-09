@@ -61,6 +61,7 @@ class AccessController extends Controller
                         ->where('name', '!=', 'superadmin')
                         ->where('name', '!=', 'unregistered_user')
                         ->get();
+        // Guarda la URL anterior en la sesión
         return view('users.user_new', ['roles' => $roles]);
     }
 
@@ -86,6 +87,6 @@ class AccessController extends Controller
             'company_id' => auth()->user()->company_id,
         ]);
 
-        return redirect()->route('home');
+        return redirect()->route('users');
     }
 }

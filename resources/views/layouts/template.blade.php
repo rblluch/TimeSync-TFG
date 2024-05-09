@@ -20,7 +20,7 @@
 
         {{-- {{dd(asset('css/app.css'))}} --}}
         
-        <header class="fixed w-full z-50 top-0 p-4">
+        <header class="fixed w-full z-40 top-0 p-4">
             {{-- Check if user is authenticated --}}
             @if($user)
                 @include('layouts.header.headerAuth')
@@ -43,6 +43,8 @@
     <script src="../resources/js/config.js"></script>
     {!! NoCaptcha::renderJs() !!}
     @yield('scripts')
+    <script src="../resources/js/header.js" ></script>
+
     {{-- <script src="{{ asset('jquery-3.7.1.min.js') }}"></script> --}}
 
 

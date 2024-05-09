@@ -12,7 +12,8 @@
 @endif
 
 @if ($user->hasAnyRole(['timesync_admin', 'super_admin']))
-    @include('layouts.button', ['url' => 'user.new', 'text' => 'Nuevo usuario'])
+    {{-- @include('layouts.button', ['url' => 'user.new', 'text' => 'Nuevo usuario']) --}}
+    @include('layouts.button', ['url' => 'users', 'text' => 'Trabajadores'])
 @endif
 
 </div>

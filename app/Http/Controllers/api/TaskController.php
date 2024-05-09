@@ -9,19 +9,19 @@ use Illuminate\Http\Request;
 class TaskController extends Controller
 {
     public function index(){
-        /* $user = auth()->user();
+        $user = auth()->user();
         $id = 0;
 
-        if(isset($user->company_id)){
+        /* if(isset($user->company_id)){
             $id = $user->company_id;
         }else{
             $id = $user->id;
-        }
+        } */
 
-        $tasks = Task::where('company_id', $id)->get(); */
-        $tasks = Task::all();
-/* 
-        if ($tasks->count() > 0) {
+        $tasks = Task::where('company_id', $user->company_id)->get();
+        //$tasks = Task::all();
+        
+        /* if ($tasks->count() > 0) {
             return response()->json([
                 'status' => 200,
                 'tasks' => $tasks
@@ -39,20 +39,8 @@ class TaskController extends Controller
     public function show($id){
         $task = Task::find($id);
 
-        /* if ($task) {
-            return response()->json([
-                'status' => 200,
-                'task' => $task
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 404,
-                'task' => 'Task not found'
-            ], 404);
-        } */
-
         if ($task) {
-            return view('task.taskShow', ['task' => $task]);
+            return view('tasks.task_show', ['task' => $task]);
         } else {
             return back()->withErrors([
                 'error' => 'Task not found'

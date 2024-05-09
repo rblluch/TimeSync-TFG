@@ -60,6 +60,16 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Role');
     }
 
+    public function schedules()
+    {
+        return $this->hasMany('App\Models\Schedule');
+    }
+
+    public function getLastSchedule()
+    {
+        return $this->schedules()->latest()->first();
+    }
+
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
