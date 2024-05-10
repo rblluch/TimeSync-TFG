@@ -9,6 +9,7 @@ use App\Mail\RegistrationConfirmation;
 use App\Models\Role;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Models\Company;
 
 class AccessController extends Controller
 {
@@ -85,6 +86,38 @@ class AccessController extends Controller
             'roles_id' => $request->role,
             'company_id' => auth()->user()->company_id,
         ]);
+
+
+        return redirect()->route('users');
+    }
+
+    public function register(Request $request){
+
+        //dd($request->all());
+
+        $validate = request()->validate([
+            'name' => 'required|unique:company',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password', // 'password' => 'required|confirmed
+            'g-recaptcha-response' => 'required',
+        ]);
+
+        //dd($validate);
+        $company = Company::create([
+            'name' => $request->name,
+        ]);
+        //dd($company);
+        $user = User::create([
+            'name' => $request->name.'_admin',
+            'email' => $request->email,
+            'password' => $request->password,
+            'roles_id' => '2',
+            'company_id' => $company->id,
+            'is_working' => '0',
+        ]);
+        //dd($user);
+
 
         return redirect()->route('users');
     }

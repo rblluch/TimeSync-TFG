@@ -22,6 +22,7 @@ use App\Http\Controllers\ServiceController;
 Route::get('/', [Controller::class, 'index'])->name('index')->middleware('guest');
 
 Route::get('/register', function(){ return view('register'); })->name('register');
+Route::post('/register', [AccessController::class, 'register'])->name('register');
 
 Route::post('/login', [AccessController::class, 'login'])->name('login');
 
