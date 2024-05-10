@@ -38,8 +38,11 @@ Route::middleware('auth')->group(function(){
     Route::get('/new/task', [TaskController::class, 'showNewTaskForm'])->name('task.new');
     Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
     Route::post('/task/update/{id}', [TaskController::class, 'update'])->name('task.update');
-    Route::delete('/task/delete/{id}', [TaskController::class, 'destroy'])->name('task.delete');
+    Route::get('/task/status/{id}', [TaskController::class, 'updateStatus'])->name('task.status');
+    Route::delete('/task/delete/{id}', [TaskController::class, 'delete'])->name('task.delete');
     Route::get('/task/cancel/{id}', [TaskController::class, 'cancel'])->name('task.cancel');
+    Route::get('/task/complete/{id}', [TaskController::class, 'complete'])->name('task.complete');
+    Route::get('/task/all', [TaskController::class, 'taskAll'])->name('task.all');
 
     //Service Routes
     Route::get('/new/service', [ServiceController::class, 'showNewServiceForm'])->name('service.new');

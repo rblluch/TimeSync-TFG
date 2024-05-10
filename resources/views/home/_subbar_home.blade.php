@@ -16,4 +16,6 @@
     @include('layouts.button', ['url' => 'users', 'text' => 'Trabajadores'])
 @endif
 
+@include('layouts.button', ['url' => 'tasks.all', 'text' => 'Lista de tareas'])
+
 </div>

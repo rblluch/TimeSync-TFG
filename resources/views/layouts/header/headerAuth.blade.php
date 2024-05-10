@@ -1,11 +1,11 @@
 @extends('layouts.header.header')
 
 @section('logo')
-    {{ asset('storage/img/app/favicon-timesync-blue.png') }}
+    {{ asset('storage/img/app/logo-timesync-blue.png') }}
 @endsection
 
 @section('logo-class')
-    w-20
+    w-48
 @endsection
 
 @php

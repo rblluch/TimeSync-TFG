@@ -24,13 +24,13 @@
             <strong>Servicio:</strong> {{ $task->service->name }}
         </p>
 
-        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas estimadas:</strong> {{ $task->service->total_hours ?? '0h' }}</p>
+        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas estimadas:</strong> {{ ($task->service->total_hours ?? '0').'h' }}</p>
         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas de esta tarea:</strong> {{ $task['hours'] ?? '0h' }}</p>
         
         @if($task->service->total_hours < $task->service->hours_used)
-            <p class="mb-3 font-normal text-red-700 dark:text-red-400"><strong>Horas acumuladas:</strong> {{ $task->service->hours_used ?? '0h' }}</p>
+            <p class="mb-3 font-normal text-red-700 dark:text-red-400"><strong>Horas acumuladas:</strong> {{ ($task->service->hours_used ?? '0').'h' }}</p>
         @else
-            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas acumuladas:</strong> {{ $task->service->hours_used ?? '0h' }}</p>
+            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><strong>Horas acumuladas:</strong> {{ ($task->service->hours_used ?? '0').'h' }}</p>
         @endif
 
         @if($task->scheduled_date)

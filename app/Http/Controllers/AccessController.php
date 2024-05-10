@@ -29,7 +29,6 @@ class AccessController extends Controller
 
         if (auth()->attempt($credentials, $remember)) {
             $user = User::where('email', $email)->first();
-            //session(['band' => $user]);
             return redirect()->route('home');
         } else {
             return back()->withErrors([

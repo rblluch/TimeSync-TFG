@@ -5,35 +5,32 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Models\Signing;
+use App\Models\User;
 
 class TaskController extends Controller
 {
     public function index(){
         $user = auth()->user();
-        $id = 0;
-
-        /* if(isset($user->company_id)){
-            $id = $user->company_id;
-        }else{
-            $id = $user->id;
-        } */
 
         $tasks = Task::where('company_id', $user->company_id)->get();
-        //$tasks = Task::all();
-        
-        /* if ($tasks->count() > 0) {
-            return response()->json([
-                'status' => 200,
-                'tasks' => $tasks
-            ], 200);
-        } else {
-            return response()->json([
-                'status' => 404,
-                'tasks' => 'No hay tasks'
-            ], 404);
-        } */
+
         return view('home.home', ['tasks' => $tasks]);
 
+    }
+
+    public function taskAll(){
+        $user = auth()->user();
+        $user = User::find($user->id);
+
+        if($user->hasAnyRole(['timesync_admin', 'superadmin'])){
+            $tasks = Task::where('company_id', $user->company_id)->get();
+        } else{
+            $tasks = Task::where('worker_id', $user->id)->get();
+        }
+
+        return view('tasks.tasks_all', ['tasks' => $tasks]);
     }
 
     public function show($id){
@@ -84,12 +81,6 @@ class TaskController extends Controller
 
         $task = Task::create($task);
 
-        /* return response()->json([
-            'status' => 201,
-            'message' => 'Task created successfully',
-            'task' => $task
-        ], 201); */
-
         return redirect()->route('home');
 
     }
@@ -102,5 +93,80 @@ class TaskController extends Controller
         $workers = $user->company->workers;
 
         return view('tasks.task_new', ['services' => $services, 'workers' => $workers]);
+    }
+
+    public function update(Request $request, $id){
+        $task = Task::find($id);
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->worker_id = $request->worker;
+        $task->service_id = $request->service;
+        $task->scheduled_date = $request->scheduled_date;
+        $task->save();
+        return redirect()->route('home');
+    }
+
+    public function updateStatus($id){
+        $user = auth()->user();
+        $user = User::find($user->id);
+        $task = Task::find($id);
+
+        if(!$user->is_working){
+            $user->is_working = !$user->is_working;
+            $user->save();
+        }
+    
+        if($task->status == 'pending'){
+            $task->status = 'in_progress';
+            $signing = Signing::where('task_id', $task->id)->where('end_date', '!=', null)->first();
+
+            if($signing){ 
+                $signing->start_date = now();
+                $signing->save();
+                //dd('Existe '.$signing);
+            } else {
+                $signing = Signing::create([
+                    'task_id' => $task->id,
+                    'user_id' => $task->worker_id,
+                    'company_id' => $task->company_id,
+                    'start_date' => now(),
+                    'end_date' => null,
+                ]);
+                //dd($signing);
+            }
+
+        } else {
+            $task->status = 'pending';
+            $signing = Signing::where('task_id', $task->id)->first();
+
+            if($signing){
+                $signing->end_date = now();
+                $signing->save();
+            }
+
+            $horaEntrada = Carbon::parse($signing->start_date);
+            $horaSalida = Carbon::parse($signing->end_date);
+            $diferenciaHoras = ($horaEntrada->diffInSeconds($horaSalida)) / 3600;
+
+            //dd($horaEntrada, $horaSalida, $diferenciaHoras);
+
+            // Almacenar la diferencia de horas como un flotante
+            $task->hours += (float) $diferenciaHoras;
+            $task->service->hours_used += (float) $diferenciaHoras;
+            $task->service->save();
+
+        }
+        $task->save();
+        return redirect()->back();
+    }
+
+    public function delete($id){
+        $task = Task::find($id);
+        $signing = Signing::where('task_id', $task->id)->first();
+        if($signing){
+            $signing->delete();
+        }
+        $task->delete();
+        return redirect()->route('home');
     }
 }
