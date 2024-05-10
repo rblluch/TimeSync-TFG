@@ -40,17 +40,18 @@ Route::middleware('auth')->group(function(){
     Route::post('/task/store', [TaskController::class, 'store'])->name('task.store');
     Route::post('/task/update/{id}', [TaskController::class, 'update'])->name('task.update');
     Route::get('/task/status/{id}', [TaskController::class, 'updateStatus'])->name('task.status');
-    Route::delete('/task/delete/{id}', [TaskController::class, 'delete'])->name('task.delete');
+    Route::get('/task/delete/{id}', [TaskController::class, 'delete'])->name('task.delete');
     Route::get('/task/cancel/{id}', [TaskController::class, 'cancel'])->name('task.cancel');
     Route::get('/task/complete/{id}', [TaskController::class, 'complete'])->name('task.complete');
-    Route::get('/task/all', [TaskController::class, 'taskAll'])->name('task.all');
+    /* Route::get('/task/all', [TaskController::class, 'taskAll'])->name('task.all'); */
+    Route::get('/task/all', function(){dd('hola');} )->name('tasks.all');
 
     //Service Routes
     Route::get('/new/service', [ServiceController::class, 'showNewServiceForm'])->name('service.new');
     Route::post('/service/store', [ServiceController::class, 'store'])->name('service.store');
     Route::get('/service/{id}', [ServiceController::class, 'show'])->name('service.show');
     Route::post('/service/update/{id}', [ServiceController::class, 'update'])->name('service.update');
-    Route::delete('/service/delete/{id}', [ServiceController::class, 'destroy'])->name('service.delete');
+    Route::get('/service/delete/{id}', [ServiceController::class, 'destroy'])->name('service.delete');
 
     //User Routes
     Route::get('/users', [UserController::class, 'index'])->name('users');

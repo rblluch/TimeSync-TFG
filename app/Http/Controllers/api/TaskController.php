@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Signing;
 use App\Models\User;
+use App\Models\Schedule;
 
 class TaskController extends Controller
 {
@@ -21,6 +22,7 @@ class TaskController extends Controller
     }
 
     public function taskAll(){
+        dd('hola');
         $user = auth()->user();
         $user = User::find($user->id);
 
@@ -114,6 +116,12 @@ class TaskController extends Controller
         if(!$user->is_working){
             $user->is_working = !$user->is_working;
             $user->save();
+            $schedule = Schedule::create([
+                'user_id' => $user->id,
+                'company_id' => $user->company_id,
+                'start_time' => now(),
+                'end_time' => null,
+            ]);
         }
     
         if($task->status == 'pending'){
@@ -167,6 +175,28 @@ class TaskController extends Controller
             $signing->delete();
         }
         $task->delete();
+        return redirect()->route('home');
+    }
+
+    public function cancel($id){
+        $task = Task::find($id);
+        $signing = Signing::where('task_id', $task->id)->first();
+        if($signing){
+            $signing->end_date = now();
+        }
+        $task->status = 'canceled';
+        $task->save();
+        return redirect()->route('home');
+    }
+
+    public function complete($id){
+        $task = Task::find($id);
+        $signing = Signing::where('task_id', $task->id)->first();
+        if($signing){
+            $signing->end_date = now();
+            $task->status = 'completed';
+            $task->save();
+        }
         return redirect()->route('home');
     }
 }

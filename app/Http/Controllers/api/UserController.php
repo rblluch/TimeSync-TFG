@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Task;
 
 class UserController extends Controller
 {
@@ -40,13 +41,22 @@ class UserController extends Controller
 
     public function workday(){
         $user = auth()->user();
+        $user = User::find($user->id);
         //dd($user);
 
         if($user){
 
             if($user->is_working){
+                $task =  Task::where('worker_id', $user->id)
+                                ->where('status', 'in_progress')
+                                ->first();
+                if($task){
+                    $task->status = 'pending';
+                    $task->save();
+                }
+                
                 $schedule = Schedule::where('user_id', $user->id)
-                                    ->where('end_time', null)
+                                    ->whereNull('end_time')
                                     ->first();
                 $schedule->end_time = now();
                 $schedule->save();

@@ -20,7 +20,7 @@ class Controller extends BaseController
     {   
         $user = auth()->user();
         $tasks = Task::with('service')->where('worker_id', $user->id)
-                                        ->whereNotIn('status', ['cancelled', 'completed'])
+                                        ->whereNotIn('status', ['canceled', 'completed'])
                                         ->get();
         return view('home.home', ['tasks' => $tasks]);
     }

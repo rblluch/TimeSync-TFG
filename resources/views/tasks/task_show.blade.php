@@ -52,10 +52,12 @@
                 <div class="flex">
                     @if($task->status == 'pending' || $task->status == 'in_progress') 
                         <a href="{{ route('task.status', $task->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-2 rounded">{{($task->status == 'pending' ? 'Iniciar' : 'Finalizar')}}</a>
-                        <a href="{{ route('task.complete', $task->id) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 mr-2 rounded">Terminar parte</a>
+                        @endif
+                    @if($task->status == 'in_progress') 
+                        <a href="{{ route('task.complete', $task->id) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mr-2 rounded">Terminar parte</a>
                     @endif
                     @if(auth()->user()->hasAnyRole(['timesync_admin', 'superadmin', 'admin']))
-                        <a href="{{ route('task.update', $task->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">Editar</a>
+                        <a href="{{-- {{ route('task.update', $task->id) }} --}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded">Editar</a>
                         @if(!auth()->user()->hasAnyRole(['admin']))
                             <a href="{{ route('task.delete', $task->id) }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mr-2 rounded">Eliminar</a>
                         @endif
